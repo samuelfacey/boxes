@@ -51,27 +51,7 @@ Returns the contents of a box or displays a specific entry.
 **Usage:**
 
 ```text
-/box <box-name> [entry-name (OR) entry-index]
-```
-
-**Options:**
-
-| Option | Description |
-|---|---|
-| `box-name` | Name of the box to view |
-| `entry-name` | Name of a specific entry to display |
-| `entry-index` | Index of a specific entry to display |
-
----
-
-### `/boxes`
-
-Searches boxes for a specific entry or a list of entries.
-
-**Usage:**
-
-```text
-/boxes [flag] [keyword]
+/box [flag] [keyword-name (OR) keyword-index]
 ```
 
 **Options:**
@@ -79,5 +59,5 @@ Searches boxes for a specific entry or a list of entries.
 | Option | Description |
 |---|---|
 | `flag` | Controls how the search is performed |
-| `keyword` | Keyword to search for |
-```
+| `keyword-name` | Name of a specific entry or box to display |
+| `keyword-index` | Index of a specific entry or box to display |

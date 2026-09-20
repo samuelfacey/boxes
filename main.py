@@ -2,34 +2,36 @@ import os
 import sys
 import asyncio
 import discord
+from discord import app_commands
 from discord.ext import commands
 from dotenv import load_dotenv
 
-try: 
-    load_dotenv()
-    TOKEN = os.getenv("DISCORD_TOKEN")
-except FileNotFoundError:
-    print("Error: The .env file was not found.")
-    sys.exit(1)
-except ValueError:
-    print("Error: Token in .env not found.")
-    sys.exit(1)
-except OSError as e:
-    print(f"OS error occurred: {e}")
-    sys.exit(1)
+class Boxes(commands.Bot):
+    def __init__(self):
+        intents = discord.Intents.default()
+        intents.message_content = True
+        super().__init__(command_prefix="/", intents=intents)
+    
+    def load_token(self) -> str:
+        load_dotenv()
+        TOKEN = os.getenv("DISCORD_TOKEN")
+        if not TOKEN:
+            raise RuntimeError("API key missing. Is the .env in the path?")
+        return TOKEN
 
-intents = discord.Intents.default()
-intents.message_content = True
-client = discord.Client(intents=intents)
+    async def on_ready(self):
+        print("boxes is open!")
 
-@client.event
-async def on_ready():
-    print("boxes is open!")
-
-@client.event
-async def on_message(message):
-    if message.author == client.user:
-        return
+    async def setup_hook(self):
+        try:
+            await self.load_extension("cogs.commands")
+            print("Commands loaded!")
+            await self.tree.sync()
+            print("Commands synced!")
+        except Exception as e:
+            print(e)
 
 if __name__ == "__main__":
-    client.run(TOKEN)
+    bot = Boxes()
+    TOKEN = bot.load_token()
+    bot.run(TOKEN)
